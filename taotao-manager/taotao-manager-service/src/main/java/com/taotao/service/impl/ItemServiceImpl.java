@@ -1,5 +1,8 @@
 package com.taotao.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.taotao.common.pojo.EasyUIDataGridResult;
 import com.taotao.mapper.TbItemMapper;
 import com.taotao.pojo.TbItem;
 import com.taotao.pojo.TbItemExample;
@@ -38,5 +41,27 @@ public class ItemServiceImpl implements ItemService {
 
         }
         return item;
+    }
+
+    /**
+     * 展示商品列表功能接口
+     * 应该放到taotao-common工程中，和其他系统共用。
+     * @param page  显示的页码
+     * @param rows 每页显示的记录数
+     * @return 创建一个pojo表示返回值。应该包含total、rows两个属性。
+     */
+    public EasyUIDataGridResult getItemList(int page, int rows) {
+        //分页处理
+        PageHelper.startPage(page,rows);
+        //执行查询
+        TbItemExample example = new TbItemExample();
+        List<TbItem> list = tbItemMapper.selectByExample(example);
+        //取分页信息
+        PageInfo<TbItem> pageInfo = new PageInfo<>(list);
+        //返回处理结果
+        EasyUIDataGridResult result = new EasyUIDataGridResult();
+        result.setTotal(pageInfo.getTotal());
+        result.setRows(list);
+        return result;
     }
 }

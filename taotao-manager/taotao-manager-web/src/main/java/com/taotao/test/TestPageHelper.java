@@ -17,6 +17,9 @@ import java.util.List;
 
 public class TestPageHelper {
 
+    /**
+     * pageHelper插件测试类
+     */
     @Test
     public void testPageHelper(){
 //    1、获取mapper对象
